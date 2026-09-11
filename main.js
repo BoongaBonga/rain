@@ -16,8 +16,8 @@ let DROP_WIDTH = 5;
 let SQUARENESS = 2;
 
 
-const standardScale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
-let grayScale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+const standardScale = "@%#*+=:. ";
+let grayScale = "@%#*+=:. ";
 let grayScaleLen = grayScale.length;
 
 squareNess.addEventListener("input", ()=>{SQUARENESS = Math.round(squareNess.value/100 * 8) + 1})
