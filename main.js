@@ -1,7 +1,7 @@
-const GRIDW = 160;
-const GRIDH = GRIDW;
+const GRIDW = 90;
+const GRIDH = 45;
 
-let map = Array.from({length: GRIDW}, () => Array(GRIDH).fill(0)) 
+let map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0)) 
 let dropsx = [];
 let dropsy = [];
 let dropsTimeLeft = [];
@@ -16,15 +16,23 @@ let DROP_WIDTH = 5;
 let SQUARENESS = 2;
 
 
-
-const grayScale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
-const grayScaleLen = grayScale.length;
+const standardScale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+let grayScale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+let grayScaleLen = grayScale.length;
 
 squareNess.addEventListener("input", ()=>{SQUARENESS = Math.round(squareNess.value/100 * 8) + 1})
 dropWidth.addEventListener("input", ()=>{DROP_WIDTH = Math.round(dropWidth.value/100 * 20) + 1})
 dropSpeed.addEventListener("input", ()=>{DROPSPEED = Math.round(dropSpeed.value/100 * 50) + 1})
 dropFreq.addEventListener("input", ()=>{dropSpawnChance = dropFreq.value/1000})
 dropTime.addEventListener("input", ()=>{DROP_LIFETIME = Math.round(dropTime.value/100 * 5000) + 100})
+userGrayScale.addEventListener("input", ()=>{
+  if(userGrayScale.value == "") {
+    grayScale = standardScale;
+  }else{
+    grayScale = userGrayScale.value; 
+  }
+  grayScaleLen = grayScale.length;
+})
 
 function getPixelBrightness(w, h) {
   let max = grayScaleLen - 1; 
