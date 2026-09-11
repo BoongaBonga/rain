@@ -11,9 +11,9 @@ let DROPSPEED = 15;
 const FPS = 60;
 const DELTATIME = 1000/FPS;
 let dropSpawnChance = 0.01;
-let DROP_LIFETIME = 3000;
+let DROP_LIFETIME = 4000;
 let DROP_WIDTH = 5;
-let SQUARENESS = 8;
+let SQUARENESS = 2;
 
 
 
