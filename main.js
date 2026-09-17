@@ -1,7 +1,7 @@
-const GRIDW = 90;
-const GRIDH = 45;
+let GRIDW = 90;
+let GRIDH = 45;
 
-let map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0)) 
+let map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0));
 let dropsx = [];
 let dropsy = [];
 let dropsTimeLeft = [];
@@ -33,6 +33,21 @@ userGrayScale.addEventListener("input", ()=>{
   }
   grayScaleLen = grayScale.length;
 })
+userGridW.addEventListener("input", ()=>{resetGrid(userGridW.value, userGridH.value);})
+userGridH.addEventListener("input", ()=>{resetGrid(userGridW.value, userGridH.value);})
+
+function load() {
+  //Find the neccesary character width for the given pixels
+  let rect = document.querySelector("body").getClientBoundingRects();
+  let width = rect.width;
+  let height = rect.height;
+}
+
+function resetGrid(newW, newH) {
+  map = Array.from({length: newH}, () => Array(newW).fill(0));
+  GRIDH=newH;
+  GRIDW=newW;
+}
 
 function getPixelBrightness(w, h) {
   let max = grayScaleLen - 1; 

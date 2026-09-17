@@ -2,7 +2,7 @@
   <head>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body style="font-family: &quot;Courier New&quot;, Courier, monospace;">
+  <body onload="load()" style="font-family: &quot;Courier New&quot;, Courier, monospace;">
     <span id="grid">
       aaa
     </span>
@@ -17,6 +17,8 @@
     drop time: <input type="range" id="dropTime">
     <br>
     gray scale: <input type="text" id="userGrayScale" placeholder="@%#*+=:. ">
+    <br>
+    grid size: <input type="number" id="userGridW" placeholder="w" min="0"> <input type="number" id="userGridH" placeholder="h" min="0">
 </body>
 <script type="text/javascript" src="main.js"></script>
 </html>

@@ -1,18 +1,31 @@
+:root {
+  --gridW: 90;
+  --gridH: 45;
+}
+
 #grid {
+
+  position: absolute;
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
 
-  font-size: 12px;
-  line-height: 12px;
+  width: 100vw;
 
-  letter-spacing: 0.35em;
+  font-size: calc(100vh / var(--gridH));
+  line-height: calc(100vh / var(--gridH));
+
+  /* total width = chars + gaps */
+  letter-spacing: calc(
+    (100vw - (var(--gridW) * 1ch))
+    / (var(--gridW) - 1)
+  );
 
   white-space: pre;
-
-  
 }
 
 body {
+  position: fixed;
   background-color: blue;
   color: white;
+  margin: 0;
 }
