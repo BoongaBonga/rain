@@ -1,3 +1,5 @@
+let CHARSIZE = 12;
+
 let GRIDW = 90;
 let GRIDH = 45;
 
@@ -33,15 +35,35 @@ userGrayScale.addEventListener("input", ()=>{
   }
   grayScaleLen = grayScale.length;
 })
-userGridW.addEventListener("input", ()=>{resetGrid(userGridW.value, userGridH.value);})
-userGridH.addEventListener("input", ()=>{resetGrid(userGridW.value, userGridH.value);})
+userCharSize.addEventListener("input", ()=>{CHARSIZE = Math.round(userCharSize.value/100 * 50); load();})
 
 function load() {
-  //Find the neccesary character width for the given pixels
-  let rect = document.querySelector("body").getClientBoundingRects();
-  let width = rect.width;
-  let height = rect.height;
+    const body = document.body;
+    const rect = body.getBoundingClientRect();
+
+    const width = rect.width;
+    const height = rect.height;
+
+    // Set font size
+    const r = document.querySelector(":root");
+    r.style.setProperty("--charSize", `${CHARSIZE}px`);
+
+    // Number of characters that fit
+    const gridW = Math.floor(width / CHARSIZE);
+    const gridH = Math.floor(height / CHARSIZE);
+
+    r.style.setProperty("--gridW", gridW);
+    r.style.setProperty("--gridH", gridH);
+
+    GRIDW = gridW;
+    GRIDH = gridH;
+
+    map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0));
+
+    //console.log(`Grid: ${gridW} x ${gridH}`);
 }
+
+window.addEventListener("resize", load);
 
 function resetGrid(newW, newH) {
   map = Array.from({length: newH}, () => Array(newW).fill(0));
