@@ -24,8 +24,12 @@
 
   white-space: pre;
 
-  /*background-color: black;*/
+  background-color: blue;
   z-index: -1;
+}
+
+#settings {
+  visibility: hidden;
 }
 
 body {

@@ -36,6 +36,18 @@ userGrayScale.addEventListener("input", ()=>{
   grayScaleLen = grayScale.length;
 })
 userCharSize.addEventListener("input", ()=>{CHARSIZE = Math.round(userCharSize.value/100 * 50); load();})
+userBgColor.addEventListener("input", ()=>{grid.style.backgroundColor = userBgColor.value;})
+userWaveColor.addEventListener("input", ()=>{document.body.style.color = userWaveColor.value;})
+
+let settingsVisible = false;
+function viewSettings() {
+  if(settingsVisible){
+    settings.style.visibility = "hidden";
+  }else {
+    settings.style.visibility = "visible";
+  }
+  settingsVisible = !settingsVisible;
+}
 
 function load() {
     const body = document.body;
