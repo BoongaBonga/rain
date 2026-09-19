@@ -24,7 +24,6 @@
 
   white-space: pre;
 
-  background-color: blue;
   z-index: -1;
 }
 
@@ -39,4 +38,8 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+}
+
+#searchBar {
+  
 }

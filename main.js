@@ -35,7 +35,7 @@ userGrayScale.addEventListener("input", ()=>{
   }
   grayScaleLen = grayScale.length;
 })
-userCharSize.addEventListener("input", ()=>{CHARSIZE = Math.round(userCharSize.value/100 * 50); load();})
+userCharSize.addEventListener("input", ()=>{CHARSIZE = Math.round(userCharSize.value/100 * 50); loadGrid();})
 userBgColor.addEventListener("input", ()=>{grid.style.backgroundColor = userBgColor.value;})
 userWaveColor.addEventListener("input", ()=>{document.body.style.color = userWaveColor.value;})
 
@@ -49,7 +49,7 @@ function viewSettings() {
   settingsVisible = !settingsVisible;
 }
 
-function load() {
+function loadGrid() {
     const body = document.body;
     const rect = body.getBoundingClientRect();
 
@@ -75,7 +75,7 @@ function load() {
     //console.log(`Grid: ${gridW} x ${gridH}`);
 }
 
-window.addEventListener("resize", load);
+window.addEventListener("resize", loadGrid);
 
 function resetGrid(newW, newH) {
   map = Array.from({length: newH}, () => Array(newW).fill(0));
@@ -124,17 +124,17 @@ function getPixelBrightness(w, h) {
 
 function updateGrid(deltaTime) {
   let textGrid = "";
-    for (let i = 0; i < map.length; i++) {
-    for (let j = 0; j < map[i].length; j++) {
-      textGrid += grayScale[getPixelBrightness(i, j)];
+    for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      textGrid += grayScale[getPixelBrightness(x, y)];
     }
     textGrid += "\n";
   }
   grid.textContent = textGrid;
 } 
 
-function randCoord() {
-  return Math.round(Math.random()*(GRIDW-1));
+function randCoords() {
+  return {x: Math.round(Math.random()*(GRIDW-1)), y: Math.round(Math.random()*(GRIDH-1))};
 }
 function spawnDrop(x, y) {
   dropsx.push(x);
@@ -162,7 +162,8 @@ function progressDrop(i, deltaTime) {
 window.setInterval(()=>{
   //maybe spawn a drop
   if(Math.random() < dropSpawnChance) {
-    spawnDrop(randCoord(), randCoord());
+    let coords = randCoords();
+    spawnDrop(coords.x, coords.y);
   }
 
   //progress all drops
@@ -181,4 +182,54 @@ window.setInterval(()=>{
   updateGrid()
 }, DELTATIME);
 
-spawnDrop(45, 45);
+function updateSettings() {
+  document.getElementById("squareNess").value = 100*(SQUARENESS - 1) / 8;
+  document.getElementById("dropWidth").value = 100*(DROP_WIDTH-1) / 20;
+  document.getElementById("dropSpeed").value = 100*(DROPSPEED-1) / 50;
+  document.getElementById("dropFreq").value = dropSpawnChance * 1000;
+  document.getElementById("dropTime").value = 100*(DROP_LIFETIME-100) / 5000;
+  document.getElementById("userGrayScale").value = grayScale;
+  document.getElementById("userCharSize").value = 100*CHARSIZE / 50;
+  userWaveColor.value = userWaveColor.value;
+  userBgColor.value   = userBgColor.value;
+}
+
+function save() {
+  let save = {
+    squareNess: SQUARENESS,
+    dropWidth: DROP_WIDTH,
+    dropSpeed: DROPSPEED,
+    dropLife: DROP_LIFETIME,
+    dropSpawnChance: dropSpawnChance,
+    grayScale: grayScale,
+    charSize: CHARSIZE,
+    bgColor: userBgColor.value,
+    waveColor: userWaveColor.value,
+  };
+  localStorage.setItem("Toogle", JSON.stringify(save));
+}
+
+window.setInterval(save, 5000);
+window.addEventListener("beforeunload", save);
+
+function loadSave() {
+  let save = JSON.parse(localStorage.getItem("Toogle"));
+  SQUARENESS          = save.squareNess;
+  DROP_WIDTH          = save.dropWidth;
+  DROPSPEED           = save.dropSpeed;
+  DROP_LIFETIME       = save.dropLife;
+  dropSpawnChance     = save.dropSpawnChance;
+  grayScale           = save.grayScale;
+  CHARSIZE            = save.charSize;
+
+  document.body.style.backgroundColor = userBgColor.value;
+  document.body.style.color = userWaveColor.value;
+
+  updateSettings();
+}
+
+function load() {
+  spawnDrop(45, 45);
+  loadSave();
+  loadGrid();
+}
