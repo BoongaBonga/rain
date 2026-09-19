@@ -2,10 +2,18 @@
   --gridW: 90;
   --gridH: 45;
   --charSize: 12px;
+
+  --searchW: 50vw;
+  --searchH: 4vw;
+
+  --barHpx: 12px;
+  --barHchar: 2;
+
+  --bgColor: blue;
+  --waveColor: white;
 }
 
 #grid {
-
   position: absolute;
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
@@ -33,13 +41,54 @@
 
 body {
   position: fixed;
-  background-color: blue;
-  color: white;
+  background-color: var(--bgColor);
+  color: var(--waveColor);
   margin: 0;
   width: 100%;
   height: 100%;
 }
 
+
+#barSpan {
+  width: var(--searchW);
+  height: var(--searchH);
+  position: absolute;
+  left: 50%;
+  top:  50%;
+  transform: translate(-50%, -50%);
+
+  color: var(--waveColor);
+}
+#barder {
+  position: absolute;
+  margin: 0;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 100% / ((1 + var(--barHchar)) * 2)));
+
+  white-space: pre;
+  align-content: center;
+  font-weight: 900;
+}
 #searchBar {
-  
+  height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  padding: 12px;
+
+  outline: none;
+  border-radius: calc(var(--searchH)/2);
+  border: none;
+  background: var(--waveColor);
+
+  color: black;
+}
+
+
+#test {
+  opacity: 0;
 }

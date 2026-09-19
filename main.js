@@ -3,6 +3,8 @@ let CHARSIZE = 12;
 let GRIDW = 90;
 let GRIDH = 45;
 
+let root = document.querySelector(":root");
+
 let map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0));
 let dropsx = [];
 let dropsy = [];
@@ -36,8 +38,12 @@ userGrayScale.addEventListener("input", ()=>{
   grayScaleLen = grayScale.length;
 })
 userCharSize.addEventListener("input", ()=>{CHARSIZE = Math.round(userCharSize.value/100 * 50); loadGrid();})
-userBgColor.addEventListener("input", ()=>{grid.style.backgroundColor = userBgColor.value;})
-userWaveColor.addEventListener("input", ()=>{document.body.style.color = userWaveColor.value;})
+userBgColor.addEventListener("input", ()=>{
+  root.style.setProperty("--bgColor", userBgColor.value);
+})
+userWaveColor.addEventListener("input", ()=>{
+  root.style.setProperty("--waveColor", userWaveColor.value);
+})
 
 let settingsVisible = false;
 function viewSettings() {
@@ -73,6 +79,50 @@ function loadGrid() {
     map = Array.from({length: GRIDH}, () => Array(GRIDW).fill(0));
 
     //console.log(`Grid: ${gridW} x ${gridH}`);
+
+
+    //Now resize the search bar
+    const barRect = searchBar.getBoundingClientRect();
+    const barWidth = barRect.width;
+    const barHeight = barRect.height;
+    root.style.setProperty("--barHpx", barHeight+"px");
+    const charRect = test.getBoundingClientRect();
+    const charWidth = charRect.width;
+    const charHeight = charRect.height;
+
+    //bar dimensions in characters
+    const barCharW = Math.floor((barWidth + 10) / charWidth) + 1;
+    const barCharH = Math.floor((barHeight + 4) / charHeight) + 1;
+    root.style.setProperty("--barHchar", barCharH);
+
+    function stringOfLength(char, length) {
+      str = "";
+      for(let i = 0; i < length; i++) {str += char}
+      return str;
+    }
+
+    let bar = " ";
+    //Make top row
+    bar += stringOfLength("_", barCharW - 2);
+    bar += "\n";
+    //make sides
+    if(barCharH == 1){
+      //one-high bar
+      bar += "(";
+      stringOfLength("_", barCharW - 2);
+      bar += ")";
+    }else {
+      //bigger bars (top bar)
+      bar += "/" + stringOfLength(" ", barCharW-2) + "\\\n";
+      //middle bars
+      for(let row = 2; row < barCharH; row++) {
+        bar += "|" + stringOfLength(" ", barCharW - 2) + "|\n";
+      }
+      //bottom bar
+      bar += "\\" + stringOfLength("_", barCharW-2) + "/";
+    }
+
+    document.getElementById("barder").textContent = bar;
 }
 
 window.addEventListener("resize", loadGrid);
@@ -190,8 +240,6 @@ function updateSettings() {
   document.getElementById("dropTime").value = 100*(DROP_LIFETIME-100) / 5000;
   document.getElementById("userGrayScale").value = grayScale;
   document.getElementById("userCharSize").value = 100*CHARSIZE / 50;
-  userWaveColor.value = userWaveColor.value;
-  userBgColor.value   = userBgColor.value;
 }
 
 function save() {
@@ -222,8 +270,11 @@ function loadSave() {
   grayScale           = save.grayScale;
   CHARSIZE            = save.charSize;
 
-  document.body.style.backgroundColor = userBgColor.value;
-  document.body.style.color = userWaveColor.value;
+  userBgColor.value   = save.bgColor;
+  userWaveColor.value = save.waveColor;
+
+  root.style.setProperty("--bgColor", userBgColor.value);
+  root.style.setProperty("--waveColor", userWaveColor.value);
 
   updateSettings();
 }
