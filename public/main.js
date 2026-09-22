@@ -45,6 +45,37 @@ userWaveColor.addEventListener("input", ()=>{
   root.style.setProperty("--waveColor", userWaveColor.value);
 })
 
+
+const searchBar = document.getElementById("searchBar");
+//search query
+window.addEventListener("keypress", (event) => {
+  if(event.key == "Enter") {
+    window.location.replace(`https://google.com/search?q=${encodeURIComponent(searchBar.value)}`);
+  }
+});
+
+//search suggestions
+const results = document.getElementById("results");
+searchBar.addEventListener("change", async ()=>{
+  const query = searchBar.value;
+
+  if(!query) return;
+
+  const response = await fetch(`/api/suggestions?q=${encodeURIComponent(query)}`);
+
+  const data = await response.json();
+
+  console.log(data);
+
+  results.innerHTML = "";
+  const suggestions = data[1];
+  for(const suggestion of suggestions) {
+    const li = document.createElement("li");
+    li.textContent = suggestion;
+    results.appendChild(li);
+  }
+})
+
 let settingsVisible = false;
 function viewSettings() {
   if(settingsVisible){
@@ -261,7 +292,10 @@ window.setInterval(save, 5000);
 window.addEventListener("beforeunload", save);
 
 function loadSave() {
-  let save = JSON.parse(localStorage.getItem("Toogle"));
+  let stored = localStorage.getItem("Toogle");
+  if(!stored) {return;}
+  let save = JSON.parse(stored);
+  
   SQUARENESS          = save.squareNess;
   DROP_WIDTH          = save.dropWidth;
   DROPSPEED           = save.dropSpeed;
